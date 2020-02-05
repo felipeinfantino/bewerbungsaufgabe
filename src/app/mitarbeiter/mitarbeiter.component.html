@@ -1,0 +1,9 @@
+<div style="border: 1px solid red; background-color: grey; margin: 40px;">
+    <p>{{name}}</p>
+    <img width="200px" height="200px" src="{{avatar_url}}" >
+    <button type="btn" (click)="navigate()">Visit repo</button>
+    <div>
+        Languages :
+    <p *ngFor="let lang of languages">{{lang}}</p>
+    </div>
+</div>
