@@ -12,11 +12,12 @@ export class DataService {
 
   API_PAGE_1 = "https://api.github.com/orgs/codecentric/members";
   API_PAGE_2 = "https://api.github.com/orgs/codecentric/members?page=2";
+  params = { "access_token": "b79b570e82bebc08652464b0d122369729e66e77"}
 
   constructor(private http : HttpClient) { }
 
   private getGeneralData(): Observable<Mitarbeiter[]>{
-    const fistPage = this.http.get(this.API_PAGE_1, {params: {"access_token": "5d0ebf1221fdedc1b58cf147cd69842750f02847"}}).pipe(
+    const fistPage = this.http.get(this.API_PAGE_1, {params: this.params}).pipe(
       map( (a : Array<Object>) =>{
         console.log(a);
         return a.map( mit =>{
@@ -24,7 +25,7 @@ export class DataService {
         });
       })
     );
-    const secondPage = this.http.get(this.API_PAGE_2, {params: {"access_token": "5d0ebf1221fdedc1b58cf147cd69842750f02847"}}).pipe(
+    const secondPage = this.http.get(this.API_PAGE_2, {params: this.params}).pipe(
       map( (a : Array<Object>) =>{
         console.log(a);
         return a.map( mit =>{
@@ -45,9 +46,9 @@ export class DataService {
         return this.getGeneralData().pipe(
           map(mitarbeite =>{
             mitarbeite.map(async mitarbeiter =>{
-              const mitarbeiterInfo = await this.http.get(`${mitarbeiter['url']}`, {params: {"access_token": "5d0ebf1221fdedc1b58cf147cd69842750f02847"}}).toPromise();
+              const mitarbeiterInfo = await this.http.get(`${mitarbeiter['url']}`, {params: this.params}).toPromise();
               mitarbeiter.name = mitarbeiterInfo['name'];
-              const repos = (await this.http.get(`${mitarbeiter['url']}/repos`, {params: {"access_token": "5d0ebf1221fdedc1b58cf147cd69842750f02847"}}).toPromise()) as Array<Object>;
+              const repos = (await this.http.get(`${mitarbeiter['url']}/repos`, {params: this.params}).toPromise()) as Array<Object>;
               const languages =[]
               for(const repo of repos){
                 if(repo['language']){

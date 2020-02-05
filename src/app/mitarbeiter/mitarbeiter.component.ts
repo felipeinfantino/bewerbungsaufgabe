@@ -13,7 +13,7 @@ export class MitarbeiterComponent implements OnInit {
   @Input() name: string;
   @Input() avatar_url: string;
   @Input() url: string;
-  @Input() languages: string[];
+  @Input() languages: {language: string, counter: number}[];
  
   ngOnInit() {
    

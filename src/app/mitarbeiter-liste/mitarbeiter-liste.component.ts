@@ -32,8 +32,33 @@ export class MitarbeiterListeComponent implements OnInit {
 
   filter(){
     this.current_mitarbeiterlist = this.all_mitarbeiterlist.filter((mitarbeiter) =>{
-      if(mitarbeiter.languages.includes(this.language_search))return mitarbeiter;
+      for(const lang of mitarbeiter.languages){
+        if(lang['language'] === this.language_search)return mitarbeiter;
+      }
     })
+
+     this.current_mitarbeiterlist.sort((a,b) => {
+       // a has more projects
+       let projectsFromA = 0;
+       for(const proj of a.languages){
+         if(proj['language'] === this.language_search){
+           projectsFromA = proj['counter'];
+           break;
+         }
+       }
+
+       let projectsFromB = 0;
+       for(const proj of b.languages){
+         if(proj['language'] === this.language_search){
+           projectsFromB = proj['counter'];
+           break;
+         }
+       }
+
+       if(projectsFromA > projectsFromB)return -1;
+       if(projectsFromA < projectsFromB) return 1;
+       return 0;
+     })
 
   }
 

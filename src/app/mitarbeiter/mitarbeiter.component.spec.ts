@@ -1,25 +1,30 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Spectator, createComponentFactory } from '@ngneat/spectator';
 
 import { MitarbeiterComponent } from './mitarbeiter.component';
 
 describe('MitarbeiterComponent', () => {
-  let component: MitarbeiterComponent;
-  let fixture: ComponentFixture<MitarbeiterComponent>;
+  let mitarbeiterComponent: Spectator<MitarbeiterComponent>; 
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ MitarbeiterComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(MitarbeiterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  const createComponent = createComponentFactory({
+      component:MitarbeiterComponent,
+      imports:[],
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  beforeEach(() => mitarbeiterComponent = createComponent({
+    props: {
+      name: "Felipe",
+      languages: [],
+      avatar_url : "",
+      url: "",
+    }
+  }))
+
+  it("Should render mitarbeiter", () =>{
+    // create mitarbeiter
+
+    mitarbeiterComponent.component.languages.push({ language :"Javascript", counter: 1 });
+    let divWithContent = mitarbeiterComponent.query("#Felipe");
+    expect(divWithContent).toExist();
+
+  })
 });
