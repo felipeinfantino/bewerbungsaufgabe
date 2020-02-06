@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-
+import { Mitarbeiter } from '../model/mitarbeiter-model';
 
 @Component({
   selector: 'app-mitarbeiter',
@@ -10,17 +9,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class MitarbeiterComponent implements OnInit {
 
   constructor(){}
-  @Input() name: string;
-  @Input() avatar_url: string;
-  @Input() url: string;
-  @Input() languages: {language: string, counter: number}[];
- 
+  @Input() mitarbeiter : Mitarbeiter;
+
   ngOnInit() {
-   
   }
 
   navigate(){
-    window.location.href = this.url;
+    window.location.href = this.mitarbeiter.repoUrl;
   }
 
 }

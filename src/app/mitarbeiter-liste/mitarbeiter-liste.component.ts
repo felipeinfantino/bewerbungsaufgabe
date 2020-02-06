@@ -9,20 +9,14 @@ import {Mitarbeiter} from '../model/mitarbeiter-model';
 })
 export class MitarbeiterListeComponent implements OnInit {
 
-  current_mitarbeiterlist: Mitarbeiter[];
+  current_mitarbeiterlist: Mitarbeiter[] = [];
   all_mitarbeiterlist: Mitarbeiter[] = [];
-
   language_search = "";
 
   constructor(private  dataservice: DataService) { 
-
     this.dataservice.getMitarbeiter().subscribe(mitarbeiter =>{
-      if(!this.current_mitarbeiterlist){
-        this.current_mitarbeiterlist = [];
-      }
       this.current_mitarbeiterlist.push(...mitarbeiter);
       this.all_mitarbeiterlist.push(...mitarbeiter);
-      console.log(this.current_mitarbeiterlist);
     })
   }
 
@@ -31,40 +25,35 @@ export class MitarbeiterListeComponent implements OnInit {
   }
 
   filter(){
-    this.current_mitarbeiterlist = this.all_mitarbeiterlist.filter((mitarbeiter) =>{
-      for(const lang of mitarbeiter.languages){
-        if(lang['language'] === this.language_search)return mitarbeiter;
-      }
-    })
-
-     this.current_mitarbeiterlist.sort((a,b) => {
-       // a has more projects
-       let projectsFromA = 0;
-       for(const proj of a.languages){
-         if(proj['language'] === this.language_search){
-           projectsFromA = proj['counter'];
-           break;
-         }
-       }
-
-       let projectsFromB = 0;
-       for(const proj of b.languages){
-         if(proj['language'] === this.language_search){
-           projectsFromB = proj['counter'];
-           break;
-         }
-       }
-
-       if(projectsFromA > projectsFromB)return -1;
-       if(projectsFromA < projectsFromB) return 1;
-       return 0;
-     })
-
+    // binding to this to access the this.language_search in the function
+    this.current_mitarbeiterlist = this.all_mitarbeiterlist.filter(this.filterByLanguage.bind(this));
+    this.current_mitarbeiterlist.sort(this.sortDescendingByProject.bind(this));
   }
 
   clear(){
     this.language_search = "";
     this.current_mitarbeiterlist = [...this.all_mitarbeiterlist];
+  }
+
+  sortDescendingByProject(mitarbeiter1: Mitarbeiter, mitarbeiter2: Mitarbeiter): number{
+    const projectsFromMitarbeiter1 = this.getNumberOfProjects(mitarbeiter1, this.language_search);
+    const projectsFromMitarbeiter2 = this.getNumberOfProjects(mitarbeiter2, this.language_search);
+    return projectsFromMitarbeiter2 - projectsFromMitarbeiter1;
+  }
+
+  filterByLanguage(mitarbeiter: Mitarbeiter){
+    for(const lang of mitarbeiter.languages){
+      if(lang['language'] === this.language_search)return mitarbeiter;
+    }
+  }
+
+  getNumberOfProjects(mitarbeiter: Mitarbeiter, language: string): number{
+    for(const proj of mitarbeiter.languages){
+      if(proj['language'] === language){
+        return proj['counter'];
+      }
+    }
+    return 0;
   }
 
 }

@@ -1,12 +1,12 @@
-<div *ngIf="current_mitarbeiterlist">
+<div *ngIf="current_mitarbeiterlist.length > 0">
     <h3>Codecentric Mitarbeiter</h3>
     <input [(ngModel)]="language_search"/>
     <button type="btn" (click)="filter()">Search</button>
     <button type="btn" (click)="clear()">Clear</button>
     <div *ngFor="let mitarbeiter of current_mitarbeiterlist">
-    <app-mitarbeiter name="{{mitarbeiter.name}}" avatar_url="{{mitarbeiter.avatar_url}}" url="{{mitarbeiter.url}}" [languages]="mitarbeiter.languages" ></app-mitarbeiter>
+    <app-mitarbeiter [mitarbeiter]="mitarbeiter" ></app-mitarbeiter>
     </div>
 </div>
-<div *ngIf="!current_mitarbeiterlist">
+<div *ngIf="current_mitarbeiterlist.length === 0">
     <h1>Loading ...</h1>
 </div>
