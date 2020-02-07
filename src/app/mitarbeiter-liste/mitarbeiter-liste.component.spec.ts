@@ -22,7 +22,7 @@ describe("MitarbeiterListComponent", () => {
         getMitarbeiter: () => {
           const mitarbeiter = new Mitarbeiter("", "");
           mitarbeiter.name = "Felipe";
-          mitarbeiter.languages = [{ language: "Javascript", counter: 1 }];
+          mitarbeiter.addLanguages(["Javascript"])
           return of([mitarbeiter]);
         }
       })
@@ -49,9 +49,9 @@ describe("MitarbeiterListComponent", () => {
 
   it("Filter function should work", () => {
     // we add 3 mitarbeiter, 2 that can python and 1 that can Java
-    const m1 = createMitarbeiter([{ language: "Python", counter: 1 }], "Bob");
-    const m2 = createMitarbeiter([{ language: "Python", counter: 1 }], "Carl");
-    const m3 = createMitarbeiter([{ language: "Java", counter: 1 }], "John");
+    const m1 = createMitarbeiter(["Python", "Python"], "Bob");
+    const m2 = createMitarbeiter(["Python"], "Carl");
+    const m3 = createMitarbeiter(["Java"], "John");
 
     mitarbeiterListeComponent.component.all_mitarbeiterlist.push(m1,m2,m3)
     mitarbeiterListeComponent.component.current_mitarbeiterlist.push(m1,m2,m3)
@@ -64,14 +64,17 @@ describe("MitarbeiterListComponent", () => {
     mitarbeiterListeComponent.detectChanges();
     mitarbeiter = mitarbeiterListeComponent.queryAll("app-mitarbeiter");
     expect(mitarbeiter.length).toEqual(2);
+    // the order should be Bob and then Carl
+    expect(mitarbeiterListeComponent.component.current_mitarbeiterlist[0]).toEqual(m1);
+    expect(mitarbeiterListeComponent.component.current_mitarbeiterlist[1]).toEqual(m2);
 
   });
 
   it("Clear function should work", () => {
     // we add 3 mitarbeiter, 2 that can python and 1 that can Java
-    const m1 = createMitarbeiter([{ language: "Python", counter: 1 }], "Bob");
-    const m2 = createMitarbeiter([{ language: "Python", counter: 1 }], "Carl");
-    const m3 = createMitarbeiter([{ language: "Java", counter: 1 }], "John");
+    const m1 = createMitarbeiter(["Python"], "Bob");
+    const m2 = createMitarbeiter(["Python"], "Carl");
+    const m3 = createMitarbeiter(["Java"], "John");
 
     mitarbeiterListeComponent.component.all_mitarbeiterlist.push(m1,m2,m3)
     mitarbeiterListeComponent.component.current_mitarbeiterlist.push(m1,m2,m3)
@@ -84,7 +87,7 @@ describe("MitarbeiterListComponent", () => {
     mitarbeiterListeComponent.detectChanges();
     mitarbeiter = mitarbeiterListeComponent.queryAll("app-mitarbeiter");
     expect(mitarbeiter.length).toEqual(2);
-
+    
     mitarbeiterListeComponent.component.clear();
     mitarbeiterListeComponent.detectChanges();
     mitarbeiter = mitarbeiterListeComponent.queryAll("app-mitarbeiter");
@@ -92,11 +95,46 @@ describe("MitarbeiterListComponent", () => {
 
 
   });
+  it("filterByLanguage should return the mitarbeiter if he has the required language", () => {
+    // we add 3 mitarbeiter, 2 that can python and 1 that can Java
+    const mitarbeiter = createMitarbeiter(["Python", "Java"], "Bob");
+    mitarbeiterListeComponent.component.language_search = "Python";
+    const result = mitarbeiterListeComponent.component.filterByLanguage(mitarbeiter);
+    expect(result).toBeTruthy();
+
+  });
+  it("filterByLanguage should return undefined if the mitarbeiter doesnt have the required language", () => {
+    // we add 3 mitarbeiter, 2 that can python and 1 that can Java
+    const mitarbeiter = createMitarbeiter(["Perl", "Javascript"], "Carl");
+    mitarbeiterListeComponent.component.language_search = "Python";
+    const result = mitarbeiterListeComponent.component.filterByLanguage(mitarbeiter);
+    expect(result).toBeFalsy();
+  });
+  it("getNumberOfProjects should return the correct number of projects", () => {
+    // we add 3 mitarbeiter, 2 that can python and 1 that can Java
+    const mitarbeiter = createMitarbeiter(["Perl", "Javascript", "Perl"], "Carl");
+    const perlProjects = mitarbeiterListeComponent.component.getNumberOfProjects(mitarbeiter, "Perl");
+    const javascriptProjects = mitarbeiterListeComponent.component.getNumberOfProjects(mitarbeiter, "Javascript");
+    const pythonProjecs = mitarbeiterListeComponent.component.getNumberOfProjects(mitarbeiter, "Python");
+    expect(perlProjects).toEqual(2);
+    expect(javascriptProjects).toEqual(1);
+    expect(pythonProjecs).toEqual(0);
+  });
+  it("sortDescendingByProject should return a positive number if the first mitarbeiter has less projects", () => {
+    // we add 3 mitarbeiter, 2 that can python and 1 that can Java
+    const mitarbeiter1 = createMitarbeiter(["Perl", "Javascript", "Perl"], "Carl");
+    const mitarbeiter2 = createMitarbeiter(["Javascript", "Javascript", "Perl"], "Carl");
+    mitarbeiterListeComponent.component.language_search = "Javascript";
+    const result = mitarbeiterListeComponent.component.sortDescendingByProject(mitarbeiter1, mitarbeiter2);
+    expect(result).toBeGreaterThan(0);
+  });
+
+
 });
 
-function createMitarbeiter(languages = [{ language: "Javascript", counter: 1 }], name= "Felipe") {
+function createMitarbeiter(languages = ["Javascript"], name= "Felipe") {
   const newMitarbeiter = new Mitarbeiter("", "");
   newMitarbeiter.name = name;
-  newMitarbeiter.languages = languages;
+  newMitarbeiter.addLanguages(languages);
   return newMitarbeiter;
 }

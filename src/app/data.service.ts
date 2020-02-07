@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class DataService {
   ApiUrl = "https://api.github.com/orgs/codecentric/members";
   params = {
-    access_token: "5a4d9589b4074e8eebae225abe266bfbb2798cae",
+    access_token: "7647a2051a2a90dc0b0a55dca33e257b63beb0d8",
     per_page: "50"
   };
 
@@ -36,16 +36,16 @@ export class DataService {
     });
   }
 
-  addName(mitarbeitern: Mitarbeiter[]) {
-    mitarbeitern.map(async mitarbeiter => {
+  async addName(mitarbeitern: Mitarbeiter[]) {
+    for(const mitarbeiter of mitarbeitern){
       const mitarbeiterInfo = await this.getName(mitarbeiter);
       mitarbeiter.name = mitarbeiterInfo["name"];
-    });
+    }
     return mitarbeitern;
   }
 
-  addLanguages(mitarbeitern: Mitarbeiter[]) {
-    mitarbeitern.map(async mitarbeiter => {
+  async addLanguages(mitarbeitern: Mitarbeiter[]) {
+    for(const mitarbeiter of mitarbeitern){
       const repos = await this.getRepos(mitarbeiter) as Array<Object>;
       const languages = [];
       for (const repo of repos) {
@@ -54,8 +54,7 @@ export class DataService {
         }
       }
       mitarbeiter.addLanguages(languages);
-      return mitarbeiter;
-    });
+    }
     return mitarbeitern;
   }
 
@@ -67,7 +66,7 @@ export class DataService {
   }
 
   getName(mitarbeiter: Mitarbeiter){
-    this.http
+    return this.http
         .get(`${mitarbeiter["apiUrl"]}`, { params: this.params })
         .toPromise();
   }

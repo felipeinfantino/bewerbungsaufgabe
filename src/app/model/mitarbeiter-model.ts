@@ -22,7 +22,6 @@ export class Mitarbeiter{
     }
 
     private addLanguage(language){
-        console.log(this._languages);
         for(const lan of this._languages){
             if(lan['language'] === language){
                 lan['counter']++;

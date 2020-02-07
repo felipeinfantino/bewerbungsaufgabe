@@ -1,6 +1,7 @@
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 
 import { MitarbeiterComponent } from './mitarbeiter.component';
+import { Mitarbeiter } from '../model/mitarbeiter-model';
 
 describe('MitarbeiterComponent', () => {
   let mitarbeiterComponent: Spectator<MitarbeiterComponent>; 
@@ -12,17 +13,14 @@ describe('MitarbeiterComponent', () => {
 
   beforeEach(() => mitarbeiterComponent = createComponent({
     props: {
-      name: "Felipe",
-      languages: [],
-      avatar_url : "",
-      url: "",
+      mitarbeiter: new Mitarbeiter("", "", "","finfantino", "Felipe", [])
     }
   }))
 
   it("Should render mitarbeiter", () =>{
     // create mitarbeiter
 
-    mitarbeiterComponent.component.languages.push({ language :"Javascript", counter: 1 });
+    mitarbeiterComponent.component.mitarbeiter.addLanguages(["Javascript"]);
     let divWithContent = mitarbeiterComponent.query("#Felipe");
     expect(divWithContent).toExist();
 

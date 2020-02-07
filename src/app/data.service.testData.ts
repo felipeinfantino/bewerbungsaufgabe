@@ -1,0 +1,42 @@
+export const jsonArray = [
+    {
+      "login": "0x4a616e",
+      "id": 5487722,
+      "node_id": "MDQ6VXNlcjU0ODc3MjI=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5487722?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/0x4a616e",
+      "html_url": "https://github.com/0x4a616e",
+      "followers_url": "https://api.github.com/users/0x4a616e/followers",
+      "following_url": "https://api.github.com/users/0x4a616e/following{/other_user}",
+      "gists_url": "https://api.github.com/users/0x4a616e/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/0x4a616e/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/0x4a616e/subscriptions",
+      "organizations_url": "https://api.github.com/users/0x4a616e/orgs",
+      "repos_url": "https://api.github.com/users/0x4a616e/repos",
+      "events_url": "https://api.github.com/users/0x4a616e/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/0x4a616e/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    {
+      "login": "arnehilmann",
+      "id": 1949686,
+      "node_id": "MDQ6VXNlcjE5NDk2ODY=",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1949686?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/arnehilmann",
+      "html_url": "https://github.com/arnehilmann",
+      "followers_url": "https://api.github.com/users/arnehilmann/followers",
+      "following_url": "https://api.github.com/users/arnehilmann/following{/other_user}",
+      "gists_url": "https://api.github.com/users/arnehilmann/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/arnehilmann/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/arnehilmann/subscriptions",
+      "organizations_url": "https://api.github.com/users/arnehilmann/orgs",
+      "repos_url": "https://api.github.com/users/arnehilmann/repos",
+      "events_url": "https://api.github.com/users/arnehilmann/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/arnehilmann/received_events",
+      "type": "User",
+      "site_admin": false
+    }
+]
